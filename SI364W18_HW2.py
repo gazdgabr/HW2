@@ -61,9 +61,19 @@ def get_artist_info():
 
         return render_template('artist_info.html', objects=result)
 
+@app.route('/artistlinks')
+def suggest_artists():
+    return render_template('artist_links.html')
 
+@app.route('/specific/song/<artist_name>')
+def show_artist(artist_name):
 
+    base_url = 'https://itunes.apple.com/search?entity=musicTrack&attribute=artistTerm&term='
+    artist_dict = json.loads(requests.get(base_url+artist_name).text)
 
+    artist_result = artist_dict['results']
+
+    return render_template('specific_artist.html', results=artist_result)
 
 
 
