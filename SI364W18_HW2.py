@@ -12,7 +12,8 @@
 #############################
 ##### IMPORT STATEMENTS #####
 #############################
-from flask import Flask, request, render_template, url_for
+
+from flask import Flask, request, render_template, url_for, flash, redirect
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, RadioField, ValidationError
 from wtforms.validators import Required
@@ -34,8 +35,6 @@ class AlbumEntryForm(FlaskForm):
     album_name = StringField ('Enter the name of an album ', validators=[Required()])
     rating = RadioField('How much do you like this album? (1 low, 3 high)', choices=[('1','1'),('2','2'),('3','3')], validators=[Required()])
     submit = SubmitField('Submit')
-
-
 
 ####################
 ###### ROUTES ######
@@ -84,11 +83,16 @@ def album_stuff():
     albumform = AlbumEntryForm()
     return render_template('album_entry.html', form=albumform)
 
-@app.route('/album_result')
+@app.route('/album_result', methods = ['POST', 'GET'])
 def album_results():
+    form = AlbumEntryForm(request.form)
+    if request.method == 'POST' and form.validate_on_submit():
+        album_title = form.album_name.data
+        album_rating = form.rating.data
 
-    return render_template('album_result.html')
-
+        return render_template('album_result.html', album=album_title, rating=album_rating)
+    flash(form.errors)
+    return redirect(url_for('album_stuff'))
 
 if __name__ == '__main__':
     app.run(use_reloader=True,debug=True)

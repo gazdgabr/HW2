@@ -1,6 +1,14 @@
 <html>
 <title>Album Form</title>
 <body>
+
+  {% for dc in get_flashed_messages() %}
+  <b>Fields that were a problem:</b><br><br>
+      {% for key in dc %}
+          * <b>{{ key }}</b> - <i> {{ dc[key][0] }}</i> <br>
+      {% endfor %}
+  {% endfor %}
+
 <form method = "POST" action="http://localhost:5000/album_result">
   {{ form.hidden_tag() }}
   {% for message in get_flashed_messages() %}
