@@ -1,6 +1,7 @@
 ## SI 364
 ## Winter 2018
 ## HW 2 - Part 1
+## Gabriella Gazdecki
 
 ## This homework has 3 parts, all of which should be completed inside this file (and a little bit inside the /templates directory).
 
@@ -30,8 +31,8 @@ app.config['SECRET_KEY'] = 'hardtoguessstring'
 ####################
 
 class AlbumEntryForm(FlaskForm):
-    album_name = StringField ('Enter the name of an album :', validators=[Required()])
-    rating = RadioField('How much do you like this album? (1 low, 3 high)', choices=[('1','low'),('2','medium'),('3','high')], validators=[Required()])
+    album_name = StringField ('Enter the name of an album ', validators=[Required()])
+    rating = RadioField('How much do you like this album? (1 low, 3 high)', choices=[('1','1'),('2','2'),('3','3')], validators=[Required()])
     submit = SubmitField('Submit')
 
 
@@ -43,7 +44,6 @@ class AlbumEntryForm(FlaskForm):
 @app.route('/')
 def hello_world():
     return 'Hello World!'
-
 
 @app.route('/user/<name>')
 def hello_user(name):
@@ -83,6 +83,11 @@ def show_artist(artist_name):
 def album_stuff():
     albumform = AlbumEntryForm()
     return render_template('album_entry.html', form=albumform)
+
+@app.route('/album_result')
+def album_results():
+
+    return render_template('album_result.html')
 
 
 if __name__ == '__main__':
